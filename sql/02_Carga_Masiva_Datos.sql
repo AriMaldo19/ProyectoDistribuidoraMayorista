@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 GENERACIÓN MASIVA DE DATOS - DISTRIBUIDORA MAYORISTA
 Volumen: ~300,000 registros totales
 Período: Enero 2023 - Diciembre 2025
