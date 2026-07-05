@@ -7,6 +7,8 @@ Proyecto de análisis de datos orientado a una distribuidora mayorista simulada,
 
 **Skills demostradas:** modelado relacional · consultas SQL analíticas (JOIN, CTE, window functions) · agregaciones y segmentación · optimización con índices · exportación de resultados · visualización con Python · documentación de hallazgos de negocio.
 
+> Análisis completo con tablas, hallazgos y recomendaciones: [`docs/RESULTADOS_Y_ANALISIS.md`](docs/RESULTADOS_Y_ANALISIS.md)
+
 ---
 
 ## Objetivo
@@ -54,7 +56,7 @@ El proyecto se centra en la correcta formulación de preguntas de negocio, el us
 │
 ├── docs/
 │   ├── Simulación y Análisis Distribuidora Mayorista.docx
-│   └── CONCLUSIONES.md          # Resumen ejecutivo de hallazgos
+│   └── RESULTADOS_Y_ANALISIS.md   # Resultados, tablas, conclusiones y gráficos
 │
 └── README.md
 ```
@@ -92,9 +94,21 @@ Prueba comparativa de una consulta de evolución mensual **antes y después** de
 
 ---
 
-## Visualizaciones
+## Gráficos destacados
 
-Los gráficos se generan desde la carpeta `python/` y se guardan en `img/graficos/`:
+Los dos insights más relevantes del análisis:
+
+**Evolución mensual** — tendencia de crecimiento, estacionalidad y relación facturación vs ganancia (2023–2025).
+
+**Productos: volumen vs rentabilidad** — demuestra que lo más vendido no es necesariamente lo que más deja margen (insight clave para decisiones comerciales).
+
+![Productos vendidos vs rentables](img/graficos/03_productos_vendidos_vs_rentables.png)
+
+Los 6 gráficos completos están en `img/graficos/`. Detalle en [`docs/RESULTADOS_Y_ANALISIS.md`](docs/RESULTADOS_Y_ANALISIS.md).
+
+---
+
+## Visualizaciones
 
 | Script | Gráfico | Insight principal |
 |--------|---------|-------------------|
@@ -104,8 +118,6 @@ Los gráficos se generan desde la carpeta `python/` y se guardan en `img/grafico
 | `grafico_rentabilidad_tipo_comercio.py` | `04_rentabilidad_tipo_comercio.png` | Margen por segmento |
 | `grafico_ticket_promedio_anual.py` | `05_ticket_promedio_anual.png` | Crecimiento del ticket |
 | `grafico_estacionalidad.py` | `06_estacionalidad_ventas.png` | Picos en otoño (hemisferio sur) |
-
-![Top 10 clientes](img/graficos/02_top10_clientes_facturacion.png)
 
 ### Cómo ejecutar y ver los gráficos (guía detallada)
 
@@ -196,53 +208,25 @@ También podés abrir cualquier `.py` en `python/`, clic derecho → **Run Pytho
 
 ---
 
-## Conclusiones del análisis
+## Conclusiones (resumen)
 
-### 1. Modelo de negocio mayorista validado
+| Área | Hallazgo clave |
+|------|----------------|
+| Modelo de negocio | 75 unidades/venta; ticket de $290K → $841K (2023–2025) |
+| Estacionalidad | Otoño concentra ~56 % de ventas; picos en mar–may |
+| Clientes | Top 10 = supermercados; base casi 100 % recurrente |
+| Productos | Mariscos/pescados premium rentan más; congelados mueven volumen |
+| Operación | ~95 % ventas confirmadas; tarjeta de crédito > 90 % facturación |
+| Performance | Índice en `ID_Venta`: −38 % lecturas, −16 % tiempo |
 
-El volumen promedio por operación es de **75 unidades** (rango 2–359), coherente con un modelo B2B y no minorista. El ticket promedio creció de **$290 mil** (2023) a **$841 mil** (2025), lo que indica operaciones de mayor valor por transacción a lo largo del período.
-
-### 2. Crecimiento sostenido con estacionalidad marcada
-
-La facturación mensual muestra una tendencia alcista entre 2023 y 2025, con picos recurrentes en **marzo, abril y mayo** (otoño en el hemisferio sur). El otoño concentra el **56 %** de las ventas del período analizado, mientras que el verano es la estación más débil. Esto sugiere planificar stock, logística y campañas comerciales con anticipación hacia el tercer trimestre del año calendario.
-
-### 3. Calidad operativa estable
-
-Las ventas confirmadas representan entre **94,8 % y 95,4 %** del total anual, con una tasa de cancelación baja y estable. El negocio mantiene un proceso comercial sólido sin deterioro aparente en el período.
-
-### 4. Clientes: alta recurrencia y concentración en supermercados
-
-El **Top 10** de clientes está integrado exclusivamente por **supermercados**, con facturación muy homogénea (~$140 M ARS c/u). Casi la totalidad de la base activa se clasifica como **Recurrente** (frecuencia de compra ≥ 90 %), lo que indica una cartera fidelizada. El segmento **Supermercado** aporta la mayor facturación absoluta, aunque no el margen más alto.
-
-### 5. Rentabilidad por segmento: márgenes estables, diferencias moderadas
-
-Los márgenes oscilan entre **59,9 %** (Kiosco) y **63,9 %** (Restaurante). La dispersión es acotada (~4 puntos porcentuales), lo que indica una política de precios relativamente uniforme entre tipos de comercio. Restaurantes y rotiserías combinan buen margen con volumen relevante.
-
-### 6. Productos: lo más vendido no siempre es lo más rentable
-
-Los productos líderes en **unidades** (Filet de Merluza, Morcilla, Apio Congelado) no coinciden del todo con los de mayor **ganancia** (Camarones, Filet de Merluza, Corvina). Los mariscos y pescados premium concentran la rentabilidad, mientras que congelados y carnes mueven volumen. Esto abre oportunidades para promociones cruzadas y revisión de mix comercial.
-
-### 7. Medios de pago: dominio de tarjeta de crédito
-
-La **tarjeta de crédito** concentra más del **90 %** de las ventas confirmadas en facturación. Transferencia, débito y efectivo tienen participación marginal y similar entre sí. Cualquier negociación con procesadores de pago impacta directamente en la mayoría de los ingresos.
-
-### 8. Optimización con índices
-
-La creación de un índice no agrupado sobre `Detalle_Ventas(ID_Venta)` redujo las lecturas lógicas de **1.078 a 662** (−38 %) y el tiempo de ejecución de **360 ms a 302 ms** (−16 %). El plan pasó de *Clustered Index Scan* a *Index Scan*, demostrando el impacto de índices en consultas con JOIN y agregaciones sobre tablas de detalle.
-
-### Recomendaciones
-
-1. **Planificación estacional**: reforzar inventario y fuerza comercial en otoño (mar–may).
-2. **Mix de productos**: priorizar mariscos y pescados premium en estrategia comercial; usar productos de alto volumen como ancla de relación con clientes.
-3. **Retención B2B**: la base recurrente es un activo clave; conviene programas de fidelización para supermercados del Top 10.
-4. **Performance**: mantener índices en columnas de JOIN frecuentes (`ID_Venta`, `ID_Cliente`, `Fecha_Venta`) en entornos con crecimiento de datos.
+Ver análisis completo con tablas, gráficos embebidos y recomendaciones en **[`docs/RESULTADOS_Y_ANALISIS.md`](docs/RESULTADOS_Y_ANALISIS.md)**.
 
 ---
 
 ## Documentación
 
+- **[`docs/RESULTADOS_Y_ANALISIS.md`](docs/RESULTADOS_Y_ANALISIS.md)** — Resultados exportados, tablas, gráficos, conclusiones y recomendaciones.
 - **`docs/Simulación y Análisis Distribuidora Mayorista.docx`** — Informe completo (modelo relacional, consultas, índices).
-- **`docs/CONCLUSIONES.md`** — Resumen ejecutivo de hallazgos con referencias a cada gráfico.
 - **`docs/texto indice.txt`** — Notas sobre la prueba de optimización con índices.
 
 ---
