@@ -1,10 +1,16 @@
 import pandas as pd  # se importa pandas para manipular los datos en formato tabla
 import matplotlib.pyplot as plt  # se importa matplotlib para generar los gráficos
 import numpy as np  # se importa numpy para trabajar con posiciones numéricas
+from pathlib import Path  # se importa pathlib para resolver rutas de forma portable
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+IMG_DIR = BASE_DIR / "img" / "graficos"
+IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 # 1. Leer CSV
 df = pd.read_csv(
-    "../data/productos_vendidos_vs_rentables.csv",
+    DATA_DIR / "a4.productos_mas_vendidos_vs_mas_rentables.csv",
     sep=";",  # se indica que el separador del archivo es punto y coma
     header=None,  # se aclara que el archivo no trae encabezados
     names=["ID_Producto", "Nombre_Producto", "Unidades_Vendidas", "Ganancia_Total"],  
@@ -140,7 +146,7 @@ ax2.set_xlim(-max_ganancia * 0.15, max_ganancia * 1.25)
 plt.tight_layout()  
 # se ajustan automáticamente los márgenes
 
-plt.savefig("../img/productos_vendidos_vs_rentables.png", dpi=300, bbox_inches='tight')  
+plt.savefig(IMG_DIR / "03_productos_vendidos_vs_rentables.png", dpi=300, bbox_inches='tight')  
 # se guarda la imagen en alta calidad
 
 plt.show()  

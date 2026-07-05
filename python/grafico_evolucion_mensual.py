@@ -1,10 +1,15 @@
 import pandas as pd  # se importa pandas para trabajar con datos en formato tabla
 import matplotlib.pyplot as plt  # se importa matplotlib para generar gráficos
-import matplotlib.dates as mdates  # se importa soporte para manejo de fechas en gráficos
+from pathlib import Path  # se importa pathlib para resolver rutas de forma portable
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+IMG_DIR = BASE_DIR / "img" / "graficos"
+IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 # 1. Leer CSV
 df = pd.read_csv(
-    "../data/evolucion_mensual_ventas_ganancias.csv",
+    DATA_DIR / "a1.evolucion_mensual_ventas_ganancias.csv",
     sep=";",  # se indica que el archivo está separado por punto y coma
     header=None,  # se aclara que el CSV no tiene encabezados
     names=["Anio", "Mes", "Facturacion_Total", "Ganancia_Total"],  # se asignan manualmente los nombres de columnas
@@ -132,7 +137,7 @@ plt.ylim(0, max_val * 1.12)
 plt.tight_layout()  
 # se acomodan automáticamente los márgenes
 
-plt.savefig("../img/evolucion_mensual_final.png", dpi=300, bbox_inches='tight')  
+plt.savefig(IMG_DIR / "01_evolucion_mensual_ventas_ganancias.png", dpi=300, bbox_inches='tight')  
 # se guarda la imagen en alta resolución
 
 plt.show()  

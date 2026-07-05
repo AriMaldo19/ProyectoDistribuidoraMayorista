@@ -1,10 +1,16 @@
 import pandas as pd  # se importa pandas para trabajar con datos en tablas
 import matplotlib.pyplot as plt  # se importa matplotlib para generar gráficos
 import numpy as np  # se importa numpy para cálculos numéricos y posiciones en el eje
+from pathlib import Path  # se importa pathlib para resolver rutas de forma portable
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+IMG_DIR = BASE_DIR / "img" / "graficos"
+IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 # 1. Leer CSV
 df = pd.read_csv(
-    "../data/top10_clientes_facturacion.csv",
+    DATA_DIR / "a2.ranking_clientes_que_mas_facturan_ganancias_asociadas.csv",
     sep=";",  # se indica que el archivo está separado por punto y coma
     header=None,  # se aclara que el archivo no tiene encabezados
     names=["ID_Cliente", "Razon_Social", "Facturacion_Total", "Ganancia_Total", "Ranking"],  
@@ -114,7 +120,7 @@ plt.xlim(-max_val * 0.15, max_val * 1.2)
 plt.tight_layout()  
 # se ajustan automáticamente los márgenes
 
-plt.savefig("../img/top10_clientes_facturacion.png", dpi=300, bbox_inches='tight')  
+plt.savefig(IMG_DIR / "02_top10_clientes_facturacion.png", dpi=300, bbox_inches='tight')  
 # se guarda la imagen en alta resolución
 
 plt.show()  

@@ -1,5 +1,6 @@
 /*
-Consulta corregida:
+1.
+Consulta 
 ANALIZAR UNIDADES TOTALES POR VENTA.
 
 Justificación:
@@ -17,12 +18,7 @@ FROM (
         SUM(Cantidad_Unidades) AS Unidades_Por_Venta
     FROM Detalle_Ventas
     GROUP BY ID_Venta
-) t;
-
--- MODIFICADO: la versión original analizaba unidades por línea de venta,
--- lo cual no reflejaba correctamente el volumen real de cada operación.
--- SE CAMBIA a unidades por venta para alinearse al modelo mayorista
--- y al DER (una venta puede tener múltiples líneas).
+) ventas_agrupadas;
 
 /*
 2.
@@ -40,7 +36,7 @@ SELECT
     YEAR(Fecha_Venta) AS Anio,
     COUNT(*) AS Total_Ventas,
     COUNT(DISTINCT CAST(Fecha_Venta AS DATE)) AS Dias_Con_Ventas,
-    -- AGREGADO: cantidad de días considerados por año
+    -- cantidad de días considerados por año
     SUM(
         CASE 
             WHEN LOWER(LTRIM(RTRIM(Estado_Venta))) = 'confirmada' 
@@ -66,11 +62,6 @@ FROM Ventas
 GROUP BY YEAR(Fecha_Venta)
 ORDER BY Anio;
 
--- MODIFICADO: la versión original solo mostraba confirmadas.
--- SE AGREGA comparación con canceladas y métrica temporal,
--- haciendo el análisis más completo y relevante para portfolio.
-
-
 /*
 3.
 Consulta:
@@ -89,15 +80,13 @@ SELECT
     SUM(Total_Venta) AS Facturacion_Total
 FROM Ventas
 WHERE LOWER(LTRIM(RTRIM(Estado_Venta))) = 'confirmada'
--- AGREGADO: se consideran solo ventas confirmadas
+-- se consideran solo ventas confirmadas
 GROUP BY 
     YEAR(Fecha_Venta),
     Forma_Pago
 ORDER BY 
     Anio,
     Facturacion_Total DESC;
--- AGREGADO: orden por facturación para evitar empates artificiales
--- detectados en la carga masiva de datos simulados.
 
 /*
 4.
@@ -116,23 +105,32 @@ FROM (
     SELECT
         ID_Cliente,
         CASE
-            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) = 0 THEN 'Menos de 1 año'
-            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) = 1 THEN '1 año'
-            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) = 2 THEN '2 años'
-            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) = 3 THEN '3 años'
-            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 4 AND 5 THEN '4 a 5 años'
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 0 AND 2 THEN '0 a 2 años'
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 3 AND 5 THEN '3 a 5 años'
             WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 6 AND 8 THEN '6 a 8 años'
-            ELSE 'Más de 8 años'
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 9 AND 11 THEN '9 a 11 años'
+            ELSE '12 años o más'
         END AS Antiguedad_Cliente,
-        DATEDIFF(YEAR, Fecha_Desde, GETDATE()) AS Antiguedad_Num
-        -- AGREGADO: valor numérico para ordenar correctamente
+        CASE
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 0 AND 2 THEN 1
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 3 AND 5 THEN 2
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 6 AND 8 THEN 3
+            WHEN DATEDIFF(YEAR, Fecha_Desde, GETDATE()) BETWEEN 9 AND 11 THEN 4
+            ELSE 5
+        END AS Orden
     FROM Clientes_Direcciones
     WHERE Fecha_Desde IS NOT NULL
-) t
-GROUP BY Antiguedad_Cliente, Antiguedad_Num
-ORDER BY Antiguedad_Num;
--- MODIFICADO: se reemplaza análisis binario por rangos más granulares,
--- mejorando la interpretación y la calidad del insight para el portfolio.
+    
+    UNION ALL -- Agregamos los rangos faltantes con NULL
+    
+    SELECT NULL, '0 a 2 años', 1
+    UNION ALL SELECT NULL, '3 a 5 años', 2
+    UNION ALL SELECT NULL, '6 a 8 años', 3
+    UNION ALL SELECT NULL, '9 a 11 años', 4
+    UNION ALL SELECT NULL, '12 años o más', 5
+) todos_rangos
+GROUP BY Antiguedad_Cliente, Orden
+ORDER BY Orden;
 
 /*
 5.
@@ -143,6 +141,7 @@ Justificación:
 Permite evaluar la evolución de las ventas promedio a lo largo del tiempo
 y detectar efectos de inflación o cambios en el comportamiento de compra.
 */
+
 SELECT 
     YEAR(Fecha_Venta) AS Anio,
     COUNT(*) AS Cantidad_Ventas,
@@ -151,7 +150,6 @@ FROM Ventas
 WHERE LOWER(LTRIM(RTRIM(Estado_Venta))) = 'confirmada'
 GROUP BY YEAR(Fecha_Venta)
 ORDER BY Anio;
--- MODIFICADO: normalización del estado de venta para evitar valores inconsistentes.
 
 /*
 6.
@@ -183,34 +181,9 @@ GROUP BY
         WHEN MONTH(Fecha_Venta) IN (9, 10, 11) THEN 'Primavera'
     END
 ORDER BY Facturacion DESC;
--- MODIFICADO: la versión original solo consideraba dos estaciones
--- y no respetaba el hemisferio sur.
--- SE CORRIGE para reflejar estacionalidad real en Argentina.
 
 /*
 7.
-Consulta:
-DETECTAR PRODUCTOS CON MARGEN UNITARIO NEGATIVO O CERO.
-
-Justificación:
-Permite identificar errores de precios o productos que generan pérdidas,
-para tomar decisiones sobre ajustes de costo o precio.
-*/
-SELECT 
-    ID_Producto,
-    Nombre_Producto,
-    Precio_Lista,
-    Costo,
-    (Precio_Lista - Costo) AS Margen_Unitario
-FROM Productos
-WHERE Precio_Lista <= Costo
-ORDER BY (Precio_Lista - Costo);
--- ACLARACIÓN: la consulta no devuelve registros en el dataset actual,
--- lo que indica precios correctamente definidos.
--- Se mantiene por su valor de control y validación del modelo.
-
-/*
-8.
 Consulta:
 ANALIZAR DÍAS DEL MES CON MAYOR VOLUMEN DE VENTAS.
 
@@ -218,6 +191,7 @@ Justificación:
 Permite identificar los días de mayor actividad comercial,
 información útil para planificación de stock y logística.
 */
+
 SELECT 
     DAY(Fecha_Venta) AS Dia_Del_Mes,
     COUNT(*) AS Cantidad_Ventas,
@@ -226,6 +200,5 @@ FROM Ventas
 WHERE LOWER(LTRIM(RTRIM(Estado_Venta))) = 'confirmada'
 GROUP BY DAY(Fecha_Venta)
 ORDER BY Cantidad_Ventas DESC;
--- MODIFICADO: se prioriza el volumen de operaciones
--- para detectar picos de demanda operativa.
+
 

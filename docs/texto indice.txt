@@ -1,0 +1,52 @@
+Antes de crear el índice, la consulta recorría la tabla completa Detalle_Ventas para poder realizar el JOIN y los cálculos. Esto generaba 1078 lecturas lógicas y un tiempo de ejecución de 360 ms.
+
+Luego de crear un índice sobre la columna ID_Venta, el motor comenzó a utilizar esa estructura optimizada en lugar de recorrer toda la tabla.
+Las lecturas bajaron a 662 y el tiempo de ejecución se redujo a 302 ms.
+
+Aunque la mejora no es extrema, demuestra cómo el uso de índices puede reducir el trabajo que realiza el motor de base de datos al ejecutar consultas analíticas.
+
+
+6. Índices y Análisis de Performance
+6.1 Prueba de optimización sobre consulta de evolución mensual
+
+Para evaluar el impacto de los índices en el rendimiento, se realizó una prueba comparando la ejecución de una consulta antes y después de crear un índice.
+
+🔹 Ejecución SIN índice
+
+Lecturas lógicas:
+Detalle_Ventas → 1078
+
+Tiempo de ejecución:
+360 ms
+
+Plan de ejecución:
+Se observa un Clustered Index Scan, lo que indica que el motor recorre la tabla completa para resolver la consulta.
+
+(Ver imagen en carpeta /img/ – Plan_sin_indice.png)
+
+🔹 Ejecución CON índice
+
+Lecturas lógicas:
+Detalle_Ventas → 662
+
+Tiempo de ejecución:
+302 ms
+
+Plan de ejecución:
+Se observa un Index Scan (NonClustered), indicando que el motor utiliza el índice creado en lugar de recorrer la tabla completa.
+
+(Ver imagen en carpeta /img/ – Plan_con_indice.png)
+
+🔹 Conclusión
+La creación del índice permitió reducir la cantidad de lecturas lógicas y el tiempo de ejecución.
+Esto demuestra que el uso de índices puede optimizar consultas que trabajan con grandes volúmenes de datos, especialmente cuando se realizan JOIN y agregaciones.
+
+
+Conceptos clave
+Scan: el motor recorre toda la tabla.
+Índice: estructura que permite buscar datos más rápido.
+Lecturas lógicas: cantidad de páginas que el motor tuvo que leer.
+Si bajan las lecturas, la consulta está trabajando de forma más eficiente.
+
+
+Las capturas correspondientes a las pruebas de rendimiento se encuentran en la carpeta /img/, organizadas en orden comparativo (sin índice y con índice).

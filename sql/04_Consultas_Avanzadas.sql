@@ -123,39 +123,6 @@ ORDER BY cat.Nombre_Categoria, Anio, Mes;
 /*
 6.
 Consulta:
-REALIZAR COMPARACIÓN INTERANUAL DE VENTAS MENSUALES.
-
-Justificación:
-Permite medir crecimiento real comparando cada mes con el mismo período
-del año anterior.
-*/
-
-WITH VentasMensuales AS (
-    SELECT 
-        YEAR(Fecha_Venta) AS Anio,
-        MONTH(Fecha_Venta) AS Mes,
-        SUM(Total_Venta) AS Facturacion_Total
-    FROM Ventas
-    WHERE Estado_Venta = 'Confirmada'
-    GROUP BY YEAR(Fecha_Venta), MONTH(Fecha_Venta)
-)
-SELECT 
-    Anio,
-    Mes,
-    Facturacion_Total,
-    LAG(Facturacion_Total) OVER (PARTITION BY Mes ORDER BY Anio) AS Facturacion_Anio_Anterior,
-    ROUND(
-        (Facturacion_Total - LAG(Facturacion_Total) OVER (PARTITION BY Mes ORDER BY Anio)) 
-        * 100.0 /
-        LAG(Facturacion_Total) OVER (PARTITION BY Mes ORDER BY Anio),
-    2) AS Variacion_Porcentual
-FROM VentasMensuales
-ORDER BY Anio, Mes;
-
-
-/*
-7.
-Consulta:
 CLASIFICAR CLIENTES SEGÚN FRECUENCIA DE COMPRA.
 
 Justificación:
