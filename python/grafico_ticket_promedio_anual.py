@@ -8,7 +8,7 @@ IMG_DIR = BASE_DIR / "img" / "graficos"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 df = pd.read_csv(
-    DATA_DIR / "b5.ticket_promedio_por_año.csv",
+    DATA_DIR / "b5.ticket_promedio_por_anio.csv",
     sep=";",
     header=None,
     names=["Anio", "Ventas_Confirmadas", "Ticket_Promedio"],
@@ -41,8 +41,8 @@ for bar, ticket in zip(bars, df["Ticket_M"]):
     )
 
 ax1.set_ylabel("Ticket Promedio (Millones ARS)", fontsize=11, fontweight="bold")
-ax1.set_xlabel("Año", fontsize=11, fontweight="bold")
-ax1.set_title("Evolución del Ticket Promedio por Año (Ventas Confirmadas)", fontsize=13, fontweight="bold", pad=15)
+ax1.set_xlabel("Anio", fontsize=11, fontweight="bold")
+ax1.set_title("Evolucion del Ticket Promedio por Anio (Ventas Confirmadas)", fontsize=13, fontweight="bold", pad=15)
 ax1.grid(axis="y", linestyle="--", alpha=0.3)
 ax1.set_ylim(0, df["Ticket_M"].max() * 1.15)
 
@@ -75,4 +75,4 @@ plt.tight_layout()
 plt.savefig(IMG_DIR / "05_ticket_promedio_anual.png", dpi=300, bbox_inches="tight")
 plt.show()
 
-print("Gráfico generado: 05_ticket_promedio_anual.png")
+print("Grafico generado: 05_ticket_promedio_anual.png")

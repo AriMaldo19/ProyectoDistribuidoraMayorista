@@ -45,7 +45,7 @@ plt.figure(figsize=(14, 6))
 # se define un tamaño amplio para que los meses se visualicen con claridad
 
 plt.plot(df["Fecha"], df["Facturacion_M"], 
-         marker='o', linewidth=2, markersize=4, color='#1f77b4', label='Facturación')  
+         marker='o', linewidth=2, markersize=4, color='#1f77b4', label='Facturacion')  
 # se grafica la línea de facturación
 
 plt.plot(df["Fecha"], df["Ganancia_M"], 
@@ -88,7 +88,7 @@ for _, row in df.iterrows():
 ene_2025 = df[(df["Anio"] == 2025) & (df["Mes"] == 1)].iloc[0]  
 # se identifica el registro correspondiente a enero 2025
 
-plt.annotate('Caída atípica', 
+plt.annotate('Caida atipica', 
              xy=(ene_2025["Fecha"], ene_2025["Facturacion_M"]),
              xytext=(ene_2025["Fecha"] + pd.Timedelta(days=30), 200),
              arrowprops=dict(arrowstyle='->', color='gray', lw=0.8, alpha=0.7),
@@ -107,12 +107,11 @@ plt.xticks(df_filtrado["Fecha"], df_filtrado["Etiqueta"],
 # se aplican etiquetas limpias y centradas
 
 # 9. Líneas divisorias por año
-for año in df["Anio"].unique():
-    fecha_inicio = pd.Timestamp(f"{año}-01-01")
+for anio in df["Anio"].unique():
+    fecha_inicio = pd.Timestamp(f"{anio}-01-01")
     plt.axvline(x=fecha_inicio, color='gray', linestyle=':', alpha=0.2, linewidth=0.5)  
-    # se dibuja una línea vertical suave para separar años
     
-    plt.text(fecha_inicio, plt.ylim()[1] * 0.98, f'{año}', 
+    plt.text(fecha_inicio, plt.ylim()[1] * 0.98, f'{anio}', 
              ha='center', fontsize=10, fontweight='bold', color='gray', alpha=0.5)  
     # se muestra el año en la parte superior del gráfico
 
@@ -120,7 +119,7 @@ for año in df["Anio"].unique():
 plt.ylabel("Millones de ARS", fontsize=11, fontweight='bold')  
 # se define etiqueta del eje Y indicando moneda y unidad
 
-plt.title("Evolución Mensual: Facturación vs Ganancia (2023-2025)", 
+plt.title("Evolucion Mensual: Facturacion vs Ganancia (2023-2025)", 
           fontsize=13, fontweight='bold', pad=15)  
 # se establece título principal del gráfico
 
@@ -144,6 +143,6 @@ plt.show()
 # se muestra el gráfico en pantalla
 
 # 11. Verificación rápida
-print("Gráfico generado correctamente")
-print(f"Enero 2025: Facturación {ene_2025['Facturacion_M']:.1f}M - Ganancia {ene_2025['Ganancia_M']:.1f}M")  
+print("Grafico generado correctamente")
+print(f"Enero 2025: Facturacion {ene_2025['Facturacion_M']:.1f}M - Ganancia {ene_2025['Ganancia_M']:.1f}M")  
 # se imprime un control simple para validar los valores del mes atípico

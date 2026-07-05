@@ -51,7 +51,7 @@ height = 0.35
 
 # Barras de facturación
 bars_fact = plt.barh(y_pos + height/2, df["Facturacion_M"], height, 
-                     label='Facturación', color='#1f77b4', 
+                     label='Facturacion', color='#1f77b4', 
                      edgecolor='black', linewidth=0.8, alpha=0.9)  
 # se dibujan las barras de facturación
 
@@ -86,7 +86,7 @@ plt.yticks(y_pos, df["Razon_Social_Short"], fontsize=10)
 plt.xlabel("Millones de ARS", fontsize=12, fontweight='bold')  
 # se define el eje X indicando moneda y unidad
 
-plt.title("TOP 10 CLIENTES: Facturación vs Ganancia", 
+plt.title("TOP 10 CLIENTES: Facturacion vs Ganancia", 
           fontsize=14, fontweight='bold', pad=15)  
 # se establece el título principal del gráfico
 
@@ -128,9 +128,9 @@ plt.show()
 
 # 11. Mostrar tabla resumen
 print("\n" + "="*80)
-print("TOP 10 CLIENTES - RANKING DE FACTURACIÓN")
+print("TOP 10 CLIENTES - RANKING DE FACTURACION")
 print("="*80)
-print(f"{'Rank':<6} {'Cliente':<30} {'Facturación':>15} {'Ganancia':>15} {'Margen':>10}")
+print(f"{'Rank':<6} {'Cliente':<30} {'Facturacion':>15} {'Ganancia':>15} {'Margen':>10}")
 print("-"*80)
 
 for i, row in df.iterrows():

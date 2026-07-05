@@ -89,7 +89,7 @@ ax1.set_yticklabels(top5_vendidos["Nombre_Corto"], fontsize=9)
 ax1.set_xlabel("Unidades Vendidas", fontsize=10, fontweight='bold')  
 # se define el título del eje X
 
-ax1.set_title("TOP 5: MÁS VENDIDOS", fontsize=11, fontweight='bold', pad=5)  
+ax1.set_title("TOP 5: MAS VENDIDOS", fontsize=11, fontweight='bold', pad=5)  
 # se establece el título del primer gráfico
 
 ax1.grid(axis='x', linestyle='--', alpha=0.3)  
@@ -134,7 +134,7 @@ ax2.set_yticklabels(top5_rentables["Nombre_Corto"], fontsize=9)
 ax2.set_xlabel("Ganancia (Millones ARS)", fontsize=10, fontweight='bold')  
 # se define el eje X indicando moneda y unidad
 
-ax2.set_title("TOP 5: MÁS RENTABLES", fontsize=11, fontweight='bold', pad=5)  
+ax2.set_title("TOP 5: MAS RENTABLES", fontsize=11, fontweight='bold', pad=5)  
 # se establece el título del segundo gráfico
 
 ax2.grid(axis='x', linestyle='--', alpha=0.3)  

@@ -44,16 +44,16 @@ y_pos = np.arange(len(df))
 ax2.bar(y_pos, df["Facturacion_M"], color="#2E86AB", edgecolor="black", linewidth=0.6, alpha=0.9)
 ax2.set_xticks(y_pos)
 ax2.set_xticklabels(df["Tipo_Comercio"], rotation=25, ha="right", fontsize=9)
-ax2.set_ylabel("Facturación (Millones ARS)", fontsize=10, fontweight="bold")
-ax2.set_title("Facturación Total por Segmento", fontsize=11, fontweight="bold")
+ax2.set_ylabel("Facturacion (Millones ARS)", fontsize=10, fontweight="bold")
+ax2.set_title("Facturacion Total por Segmento", fontsize=11, fontweight="bold")
 ax2.grid(axis="y", linestyle="--", alpha=0.3)
 
 for i, val in enumerate(df["Facturacion_M"]):
     ax2.text(i, val + 200, f"{val:,.0f}M", ha="center", fontsize=8, fontweight="bold")
 
-plt.suptitle("Rentabilidad y Facturación por Tipo de Comercio", fontsize=13, fontweight="bold", y=1.02)
+plt.suptitle("Rentabilidad y Facturacion por Tipo de Comercio", fontsize=13, fontweight="bold", y=1.02)
 plt.tight_layout()
 plt.savefig(IMG_DIR / "04_rentabilidad_tipo_comercio.png", dpi=300, bbox_inches="tight")
 plt.show()
 
-print("Gráfico generado: 04_rentabilidad_tipo_comercio.png")
+print("Grafico generado: 04_rentabilidad_tipo_comercio.png")

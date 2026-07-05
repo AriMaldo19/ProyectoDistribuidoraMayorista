@@ -1,52 +1,52 @@
-Antes de crear el índice, la consulta recorría la tabla completa Detalle_Ventas para poder realizar el JOIN y los cálculos. Esto generaba 1078 lecturas lógicas y un tiempo de ejecución de 360 ms.
+Antes de crear el indice, la consulta recorria la tabla completa Detalle_Ventas para poder realizar el JOIN y los calculos. Esto generaba 1078 lecturas logicas y un tiempo de ejecucion de 360 ms.
 
-Luego de crear un índice sobre la columna ID_Venta, el motor comenzó a utilizar esa estructura optimizada en lugar de recorrer toda la tabla.
-Las lecturas bajaron a 662 y el tiempo de ejecución se redujo a 302 ms.
+Luego de crear un indice sobre la columna ID_Venta, el motor comenzo a utilizar esa estructura optimizada en lugar de recorrer toda la tabla.
+Las lecturas bajaron a 662 y el tiempo de ejecucion se redujo a 302 ms.
 
-Aunque la mejora no es extrema, demuestra cómo el uso de índices puede reducir el trabajo que realiza el motor de base de datos al ejecutar consultas analíticas.
+Aunque la mejora no es extrema, demuestra como el uso de indices puede reducir el trabajo que realiza el motor de base de datos al ejecutar consultas analiticas.
 
 
-6. Índices y Análisis de Performance
-6.1 Prueba de optimización sobre consulta de evolución mensual
+6. Indices y Analisis de Performance
+6.1 Prueba de optimizacion sobre consulta de evolucion mensual
 
-Para evaluar el impacto de los índices en el rendimiento, se realizó una prueba comparando la ejecución de una consulta antes y después de crear un índice.
+Para evaluar el impacto de los indices en el rendimiento, se realizo una prueba comparando la ejecucion de una consulta antes y despues de crear un indice.
 
-🔹 Ejecución SIN índice
+Ejecucion SIN indice
 
-Lecturas lógicas:
-Detalle_Ventas → 1078
+Lecturas logicas:
+Detalle_Ventas -> 1078
 
-Tiempo de ejecución:
+Tiempo de ejecucion:
 360 ms
 
-Plan de ejecución:
+Plan de ejecucion:
 Se observa un Clustered Index Scan, lo que indica que el motor recorre la tabla completa para resolver la consulta.
 
-(Ver imagen en carpeta /img/ – Plan_sin_indice.png)
+(Ver imagen en carpeta /img/ - Plan_sin_indice.png)
 
-🔹 Ejecución CON índice
+Ejecucion CON indice
 
-Lecturas lógicas:
-Detalle_Ventas → 662
+Lecturas logicas:
+Detalle_Ventas -> 662
 
-Tiempo de ejecución:
+Tiempo de ejecucion:
 302 ms
 
-Plan de ejecución:
-Se observa un Index Scan (NonClustered), indicando que el motor utiliza el índice creado en lugar de recorrer la tabla completa.
+Plan de ejecucion:
+Se observa un Index Scan (NonClustered), indicando que el motor utiliza el indice creado en lugar de recorrer la tabla completa.
 
-(Ver imagen en carpeta /img/ – Plan_con_indice.png)
+(Ver imagen en carpeta /img/ - Plan_con_indice.png)
 
-🔹 Conclusión
-La creación del índice permitió reducir la cantidad de lecturas lógicas y el tiempo de ejecución.
-Esto demuestra que el uso de índices puede optimizar consultas que trabajan con grandes volúmenes de datos, especialmente cuando se realizan JOIN y agregaciones.
+Conclusion
+La creacion del indice permitio reducir la cantidad de lecturas logicas y el tiempo de ejecucion.
+Esto demuestra que el uso de indices puede optimizar consultas que trabajan con grandes volumenes de datos, especialmente cuando se realizan JOIN y agregaciones.
 
 
 Conceptos clave
 Scan: el motor recorre toda la tabla.
-Índice: estructura que permite buscar datos más rápido.
-Lecturas lógicas: cantidad de páginas que el motor tuvo que leer.
-Si bajan las lecturas, la consulta está trabajando de forma más eficiente.
+Indice: estructura que permite buscar datos mas rapido.
+Lecturas logicas: cantidad de paginas que el motor tuvo que leer.
+Si bajan las lecturas, la consulta esta trabajando de forma mas eficiente.
 
 
-Las capturas correspondientes a las pruebas de rendimiento se encuentran en la carpeta /img/, organizadas en orden comparativo (sin índice y con índice).
+Las capturas correspondientes a las pruebas de rendimiento se encuentran en la carpeta /img/4.indices/, organizadas en orden comparativo (sin indice y con indice).

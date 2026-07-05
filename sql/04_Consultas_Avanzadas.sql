@@ -1,11 +1,11 @@
 ﻿/*
 1.
 Consulta:
-ANALIZAR LA EVOLUCIÓN MENSUAL DE VENTAS Y GANANCIAS ENTRE 2023 Y 2025.
+ANALIZAR LA EVOLUCION MENSUAL DE VENTAS Y GANANCIAS ENTRE 2023 Y 2025.
 
-Justificación:
+Justificacion:
 Permite detectar tendencias de crecimiento, estacionalidad y evaluar si el aumento
-de facturación se traduce en mayor rentabilidad.
+de facturacion se traduce en mayor rentabilidad.
 */
 
 SELECT 
@@ -24,11 +24,11 @@ ORDER BY Anio, Mes;
 /*
 2.
 Consulta:
-RANKING DE LOS 10 CLIENTES QUE MÁS FACTURAN Y SU GANANCIA ASOCIADA.
+RANKING DE LOS 10 CLIENTES QUE MAS FACTURAN Y SU GANANCIA ASOCIADA.
 
-Justificación:
-Permite identificar los clientes más relevantes del negocio en términos
-de facturación y rentabilidad.
+Justificacion:
+Permite identificar los clientes mas relevantes del negocio en terminos
+de facturacion y rentabilidad.
 */
 
 WITH RankingClientes AS (
@@ -55,9 +55,9 @@ ORDER BY Ranking;
 Consulta:
 CALCULAR LA RENTABILIDAD PROMEDIO POR TIPO DE COMERCIO.
 
-Justificación:
-Permite comparar el desempeño económico de cada segmento de clientes
-y detectar cuáles generan mayor margen.
+Justificacion:
+Permite comparar el desempeno economico de cada segmento de clientes
+y detectar cuales generan mayor margen.
 */
 
 SELECT 
@@ -76,11 +76,11 @@ ORDER BY Margen_Porcentual DESC;
 /*
 4.
 Consulta:
-COMPARAR PRODUCTOS MÁS VENDIDOS VS PRODUCTOS MÁS RENTABLES.
+COMPARAR PRODUCTOS MAS VENDIDOS VS PRODUCTOS MAS RENTABLES.
 
-Justificación:
-Permite detectar diferencias entre rotación y rentabilidad,
-clave para decisiones de catálogo y promociones.
+Justificacion:
+Permite detectar diferencias entre rotacion y rentabilidad,
+clave para decisiones de catalogo y promociones.
 */
 
 SELECT 
@@ -99,10 +99,10 @@ ORDER BY Unidades_Vendidas DESC;
 /*
 5.
 Consulta:
-ANALIZAR VENTAS MENSUALES POR CATEGORÍA DE PRODUCTO.
+ANALIZAR VENTAS MENSUALES POR CATEGORIA DE PRODUCTO.
 
-Justificación:
-Permite detectar patrones estacionales y analizar desempeño histórico por categoría.
+Justificacion:
+Permite detectar patrones estacionales y analizar desempeno historico por categoria.
 */
 
 SELECT 
@@ -123,11 +123,11 @@ ORDER BY cat.Nombre_Categoria, Anio, Mes;
 /*
 6.
 Consulta:
-CLASIFICAR CLIENTES SEGÚN FRECUENCIA DE COMPRA.
+CLASIFICAR CLIENTES SEGUN FRECUENCIA DE COMPRA.
 
-Justificación:
+Justificacion:
 Permite segmentar clientes en recurrentes, frecuentes u ocasionales
-para estrategias de fidelización.
+para estrategias de fidelizacion.
 */
 
 WITH ComprasCliente AS (

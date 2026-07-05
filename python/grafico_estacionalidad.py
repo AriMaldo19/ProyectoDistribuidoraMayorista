@@ -9,19 +9,19 @@ IMG_DIR = BASE_DIR / "img" / "graficos"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 df = pd.read_csv(
-    DATA_DIR / "b6.ventas_segun_estacion_año.csv",
+    DATA_DIR / "b6.ventas_segun_estacion_anio.csv",
     sep=";",
     header=None,
     names=["Estacion", "Cantidad_Ventas", "Facturacion_Total"],
     encoding="utf-8-sig",
 )
 
-orden_estaciones = ["Verano", "Otoño", "Invierno", "Primavera"]
+orden_estaciones = ["Verano", "Otono", "Invierno", "Primavera"]
 df["Estacion"] = pd.Categorical(df["Estacion"], categories=orden_estaciones, ordered=True)
 df = df.sort_values("Estacion")
 df["Facturacion_M"] = df["Facturacion_Total"] / 1_000_000_000
 
-colores = {"Verano": "#FFD166", "Otoño": "#EF476F", "Invierno": "#118AB2", "Primavera": "#06D6A0"}
+colores = {"Verano": "#FFD166", "Otono": "#EF476F", "Invierno": "#118AB2", "Primavera": "#06D6A0"}
 bar_colors = [colores[e] for e in df["Estacion"]]
 
 fig, ax1 = plt.subplots(figsize=(10, 6))
@@ -40,13 +40,13 @@ bars2 = ax2.bar(
     x + width / 2,
     df["Facturacion_M"],
     width,
-    label="Facturación (miles de M ARS)",
+    label="Facturacion (miles de M ARS)",
     color=bar_colors,
     edgecolor="black",
     linewidth=0.6,
     alpha=0.55,
 )
-ax2.set_ylabel("Facturación (miles de millones ARS)", fontsize=11, fontweight="bold")
+ax2.set_ylabel("Facturacion (miles de millones ARS)", fontsize=11, fontweight="bold")
 
 for bar, val in zip(bars1, df["Cantidad_Ventas"]):
     ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 200, f"{val:,}", ha="center", fontsize=9, fontweight="bold")
@@ -64,4 +64,4 @@ plt.tight_layout()
 plt.savefig(IMG_DIR / "06_estacionalidad_ventas.png", dpi=300, bbox_inches="tight")
 plt.show()
 
-print("Gráfico generado: 06_estacionalidad_ventas.png")
+print("Grafico generado: 06_estacionalidad_ventas.png")
