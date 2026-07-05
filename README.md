@@ -90,9 +90,51 @@ El proyecto se centra en la correcta formulacion de preguntas de negocio, el uso
 | Ventas mensuales por categoria | `a5.ventas_mensuales_por_categoria_producto.csv` |
 | Segmentacion por frecuencia de compra | `a6.clasificar_clientes_segun_frecuencia_compra.csv` |
 
+---
+
+## Modelado de la base de datos
+
+El esquema relacional (`sql/01_Creacion_BD_y_Tablas.sql`) fue **disenado inicialmente con un prompt de IA** (modelo de negocio mayorista de alimentos), y despues **validado y ajustado manualmente** antes de cargar datos y ejecutar consultas.
+
+Incluye 8 tablas con PK, FK, CHECK constraints y reglas de negocio:
+
+| Tabla | Rol |
+|-------|-----|
+| `Categorias` / `Productos` | Catalogo de alimentos |
+| `Clientes` + contactos + direcciones | Cartera B2B |
+| `Ventas` / `Detalle_Ventas` | Operaciones y lineas de venta |
+
+Flujo de ejecucion en SQL Server:
+
+```
+01_Creacion_BD_y_Tablas.sql  ->  02_Carga_Masiva_Datos.sql  ->  03/04 consultas  ->  05 indices
+```
+
+---
+
+## Analisis de indices y performance
+
+Si, **hay analisis de indices documentado**. No es solo crear el indice: se comparo la misma consulta **antes y despues** con metricas reales.
+
+| Paso | Que se mide | Evidencia |
+|------|-------------|-----------|
+| Sin indice | Lecturas logicas, tiempo, plan (Clustered Index Scan) | `img/4.indices/01-03` |
+| Con indice `IX_Detalle_Ventas_ID_Venta` | Misma consulta, Index Scan | `img/4.indices/04-06` |
+
+**Resultados:**
+
+| Metrica | Sin indice | Con indice | Mejora |
+|---------|------------|------------|--------|
+| Lecturas logicas (Detalle_Ventas) | 1.078 | 662 | -38 % |
+| Tiempo de ejecucion | 360 ms | 302 ms | -16 % |
+
+- **Script reproducible:** `sql/05_Indices_y_Performance.sql` (PASO 1 → 2 → 3)
+- **Notas del analisis:** `docs/texto indice.txt`
+- **Resumen en resultados:** `docs/RESULTADOS_Y_ANALISIS.md` (seccion Optimizacion)
+
 ### Optimizacion (`05_Indices_y_Performance.sql`)
 
-Prueba comparativa de una consulta de evolucion mensual **antes y despues** de crear un indice en `Detalle_Ventas(ID_Venta)`. Capturas en `img/4.indices/`.
+Prueba comparativa documentada. Capturas en `img/4.indices/`.
 
 ---
 

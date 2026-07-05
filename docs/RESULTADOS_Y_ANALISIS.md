@@ -2,6 +2,8 @@
 
 Documento generado a partir de los resultados exportados de SQL Server (consultas basicas, avanzadas y prueba de indices). Periodo analizado: **2023-2025**.
 
+El modelo relacional (`01_Creacion_BD_y_Tablas.sql`) fue **generado con prompt de IA** y validado manualmente antes de la carga de datos.
+
 ---
 
 ## Resumen ejecutivo
@@ -160,7 +162,14 @@ La base activa se concentra en clientes con **3 a 8 anos** de relacion comercial
 
 ## Optimizacion con indices
 
-Prueba sobre la consulta de evolucion mensual (`05_Indices_y_Performance.sql`):
+Prueba sobre la consulta de evolucion mensual (`05_Indices_y_Performance.sql`).
+
+Indice creado:
+
+```sql
+CREATE NONCLUSTERED INDEX IX_Detalle_Ventas_ID_Venta
+ON Detalle_Ventas (ID_Venta);
+```
 
 | Metrica | Sin indice | Con indice | Variacion |
 | --- | --- | --- | --- |
@@ -168,7 +177,14 @@ Prueba sobre la consulta de evolucion mensual (`05_Indices_y_Performance.sql`):
 | Tiempo de ejecucion | 360 ms | 302 ms | -16 % |
 | Plan de ejecucion | Clustered Index Scan | Index Scan (NonClustered) | — |
 
-Capturas comparativas en `img/4.indices/`.
+**Evidencia visual (SSMS):**
+
+| Sin indice | Con indice |
+| --- | --- |
+| ![IO sin indice](../img/4.indices/01_io_sin_indice.PNG) | ![IO con indice](../img/4.indices/04_io_con_indice.PNG) |
+| ![Plan sin indice](../img/4.indices/03_plan_sin_indice.PNG) | ![Plan con indice](../img/4.indices/06_plan_con_indice.PNG) |
+
+Detalle del analisis: `docs/texto indice.txt`
 
 ---
 
